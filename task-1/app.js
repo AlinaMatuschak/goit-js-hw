@@ -11,10 +11,9 @@ while (true) {
 
   if (Number.isNaN(inputNumber)) {
     alert('Было введено не число, попробуйте еще раз');
-    break;
+  } else {
+    numbers.push(inputNumber);
   }
-
-  numbers.push(inputNumber);
 }
 
 for (let i = 0; i < numbers.length; i += 1) {
