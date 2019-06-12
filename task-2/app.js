@@ -17,4 +17,4 @@ do {
     alert('У вас закончились попытки, аккаунт заблокирован!');
     break;
   }
-} while (attemptsLeft >= 0);
+} while (true);
