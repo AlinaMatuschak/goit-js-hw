@@ -2,12 +2,12 @@ const passwords = ['qwerty', '111qwe', '123123', 'r4nd0mp4zzw0rd'];
 let attemptsLeft = 3;
 
 do {
-  const init = prompt('Введите пароль');
+  const input = prompt('Введите пароль');
 
-  if (passwords.includes(init)) {
+  if (passwords.includes(input)) {
     alert('Добро пожаловать!');
     break;
-  } else if (!init) {
+  } else if (!input) {
     alert('Cancel');
     break;
   } else if (attemptsLeft > 1) {
