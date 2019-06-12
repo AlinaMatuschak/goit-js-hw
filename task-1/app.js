@@ -20,4 +20,4 @@ for (let i = 0; i < numbers.length; i += 1) {
   total += Number(numbers[i]);
 }
 
-alert(total);
+alert(`Общая сумма чисел равна ${total}`);
