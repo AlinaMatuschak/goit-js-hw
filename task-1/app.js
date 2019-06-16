@@ -2,8 +2,8 @@ const logins = ['Mango', 'robotGoogles', 'Poly', 'Aj4x1sBozz', 'qwerty123'];
 
 const isLoginValid = function (login) {
   const isValid = login.lenght >= 4 && login.lenght <= 16;
-  console.log(login.lenght);
-  console.log(login);
+  console.log('login: ', login);
+  console.log('login.lenght: ', login.lenght);
   return isValid;
 };
 
