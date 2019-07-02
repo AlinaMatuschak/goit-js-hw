@@ -12,7 +12,7 @@ const Notepad = function Notepad(notes = []) {
   };
 
   this.saveNote = function (note) {
-    return this.notes.push(note);
+    this.notes.push(note);
   };
 
   this.deleteNote = function (id) {
@@ -24,11 +24,7 @@ const Notepad = function Notepad(notes = []) {
   };
 
   this.updateNoteContent = function (id, updatedContent) {
-    for (let note of this.notes) {
-      if (note.id === id) {
-        return note = Object.assign(note, updatedContent);
-      }
-    }
+    return note = Object.assign(this.findNoteById(id), updatedContent);
   };
 
   this.updateNotePriority = function (id, priority) {
