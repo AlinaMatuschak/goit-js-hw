@@ -1,42 +1,46 @@
-const Notepad = function Notepad(notes = []) {
-  this.notes = notes;
+class Notepad {
+  constructor(notes = []) {
+    this._notes = notes;
+  }
 
-  this.getNotes = function () {
-    return this.notes;
-  };
+  static get PriorityLow() { return 0; }
 
-  this.findNoteById = function (id) {
+  static get PriorityNormal() { return 1; }
+
+  static get PriorityHigh() { return 2; }
+
+  get notes() {
+    return this._notes;
+  }
+
+  findNoteById(id) {
     for (const note of this.notes) {
       if (note.id === id) return note;
     }
-  };
+  }
 
-  this.saveNote = function (note) {
+  saveNote(note) {
     this.notes.push(note);
-  };
+  }
 
-  this.deleteNote = function (id) {
+  deleteNote(id) {
     for (let i = 0; i < this.notes.length; i += 1) {
       if (this.notes[i].id === id) {
         this.notes.splice(i, 1);
       }
     }
-  };
+  }
 
-  this.updateNoteContent = function (id, updatedContent) {
-    return note = Object.assign(this.findNoteById(id), updatedContent);
-  };
+  updateNoteContent(id, updatedContent) {
+    return Object.assign(this.findNoteById(id), updatedContent);
+  }
 
-  this.updateNotePriority = function (id, priority) {
-    for (const note of this.notes) {
-      if (note.id === id) {
-        note.priority = priority;
-        return note;
-      }
-    }
-  };
+  updateNotePriority(id, priority) {
+    this.findNoteById(id).priority = priority;
+    return this.findNoteById(id);
+  }
 
-  this.filterNotesByQuery = function (query) {
+  filterNotesByQuery(query) {
     const newNotesByQuery = [];
 
     for (const note of this.notes) {
@@ -48,9 +52,9 @@ const Notepad = function Notepad(notes = []) {
     }
 
     return newNotesByQuery;
-  };
+  }
 
-  this.filterNotesByPriority = function (priority) {
+  filterNotesByPriority(priority) {
     const newNotesByPriority = [];
 
     for (const note of this.notes) {
@@ -60,88 +64,77 @@ const Notepad = function Notepad(notes = []) {
     }
 
     return newNotesByPriority;
-  };
-};
+  }
+}
 
-Notepad.Priority = {
-  LOW: 0,
-  NORMAL: 1,
-  HIGH: 2,
-};
-
-//   --------------------------------------------------ПЕРЕВІРКА------------------------------------------------------
+// -----------------------------ПЕРЕВІРКА----------------------------
 
 const initialNotes = [
   {
     id: 'id-1',
     title: 'JavaScript essentials',
     body:
-        'Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc',
-    priority: Notepad.Priority.HIGH,
+      'Get comfortable with all basic JavaScript concepts: variables, loops, arrays, branching, objects, functions, scopes, prototypes etc',
+    priority: Notepad.PriorityHigh,
   },
   {
     id: 'id-2',
     title: 'Refresh HTML and CSS',
     body:
-        'Need to refresh HTML and CSS concepts, after learning some JavaScript. Maybe get to know CSS Grid and PostCSS, they seem to be trending.',
-    priority: Notepad.Priority.NORMAL,
+      'Need to refresh HTML and CSS concepts, after learning some JavaScript. Maybe get to know CSS Grid and PostCSS, they seem to be trending.',
+    priority: Notepad.PriorityNormal,
   },
 ];
 
 const notepad = new Notepad(initialNotes);
 
 /*
-   * Смотрю что у меня в заметках после инициализации
-   */
-console.log('Все текущие заметки: ', notepad.getNotes());
+  Смотрю что у меня в заметках после инициализации
+*/
+console.log('Все текущие заметки: ', notepad.notes);
 console.log('');
+
 /*
-   * Добавляю еще 2 заметки и смотрю что получилось
-   */
+ * Добавляю еще 2 заметки и смотрю что получилось
+ */
 notepad.saveNote({
   id: 'id-3',
   title: 'Get comfy with Frontend frameworks',
   body:
-      'First must get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
-  priority: Notepad.Priority.NORMAL,
+    'First must get some general knowledge about frameworks, then maybe try each one for a week or so. Need to choose between React, Vue and Angular, by reading articles and watching videos.',
+  priority: Notepad.PriorityNormal,
 });
 
 notepad.saveNote({
   id: 'id-4',
   title: 'Winter clothes',
   body:
-      "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
-  priority: Notepad.Priority.LOW,
+    "Winter is coming! Need some really warm clothes: shoes, sweater, hat, jacket, scarf etc. Maybe should get a set of sportwear as well so I'll be able to do some excercises in the park.",
+  priority: Notepad.PriorityLow,
 });
 
-console.log('Все текущие заметки: ', notepad.getNotes());
+console.log('Все текущие заметки: ', notepad.notes);
 console.log('');
 
 /*
-   * Зима уже близко, пора поднять приоритет на покупку одежды
-   */
-notepad.updateNotePriority('id-4', Notepad.Priority.NORMAL);
+ * Зима уже близко, пора поднять приоритет на покупку одежды
+ */
+notepad.updateNotePriority('id-4', Notepad.PriorityNormal);
 
-console.log(
-  'Заметки после обновления приоритета для id-4: ',
-  notepad.getNotes(),
-);
+console.log('Заметки после обновления приоритета для id-4: ', notepad.notes);
 console.log('');
 
 /*
-   * Решил что фреймворки отложу немного, понижаю приоритет
-   */
-notepad.updateNotePriority('id-3', Notepad.Priority.LOW);
+ * Решил что фреймворки отложу немного, понижаю приоритет
+ */
+notepad.updateNotePriority('id-3', Notepad.PriorityLow);
 
-console.log(
-  'Заметки после обновления приоритета для id-3: ',
-  notepad.getNotes(),
-);
+console.log('Заметки после обновления приоритета для id-3: ', notepad.notes);
 console.log('');
 
 /*
-   * Решил отфильтровать заметки по слову html
-   */
+ * Решил отфильтровать заметки по слову html
+ */
 console.log(
   'Отфильтровали заметки по ключевому слову "html": ',
   notepad.filterNotesByQuery('html'),
@@ -149,8 +142,8 @@ console.log(
 console.log('');
 
 /*
-   * Решил отфильтровать заметки по слову javascript
-   */
+ * Решил отфильтровать заметки по слову javascript
+ */
 console.log(
   'Отфильтровали заметки по ключевому слову "javascript": ',
   notepad.filterNotesByQuery('javascript'),
@@ -158,29 +151,29 @@ console.log(
 console.log('');
 
 /*
-   * Хочу посмотреть только заметки с нормальным приоритетом
-   */
+ * Хочу посмотреть только заметки с нормальным приоритетом
+ */
 console.log(
   'Отфильтровали заметки по нормальному приоритету: ',
-  notepad.filterNotesByPriority(Notepad.Priority.NORMAL),
+  notepad.filterNotesByPriority(Notepad.PriorityNormal),
 );
 console.log('');
 
 /*
-   * Обновим контент заметки с id-3
-   */
+ * Обновим контент заметки с id-3
+ */
 notepad.updateNoteContent('id-3', {
   title: 'Get comfy with React.js or Vue.js',
 });
 
 console.log(
   'Заметки после обновления контента заметки с id-3: ',
-  notepad.getNotes(),
+  notepad.notes,
 );
 console.log('');
 
 /*
-   * Повторил HTML и CSS, удаляю запись c id-2
-   */
+ * Повторил HTML и CSS, удаляю запись c id-2
+ */
 notepad.deleteNote('id-2');
-console.log('Заметки после удаления с id -2: ', notepad.getNotes());
+console.log('Заметки после удаления с id -2: ', notepad.notes);
