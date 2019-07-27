@@ -90,7 +90,7 @@ console.log('');
 console.log('TASK-1');
 
 const getAllNames = users => users.map(user => user.name);
-console.log(getAllNames(users));
+console.table(getAllNames(users));
 // [ 'Moore Hensley', 'Sharlene Bush', 'Ross Vazquez', 'Elma Head', 'Carey Barr', 'Blackburn Dotson', 'Sheree Anthony' ]
 
 //= =================================TASK-2=================================
@@ -98,37 +98,37 @@ console.log('');
 console.log('TASK-2');
 
 const getUsersByEyeColor = (users, color) => users.filter(user => user.eyeColor === color);
-console.log(getUsersByEyeColor(users, 'blue')); // [объект Moore Hensley, объект Sharlene Bush, объект Carey Barr]
+console.table(getUsersByEyeColor(users, 'blue')); // [объект Moore Hensley, объект Sharlene Bush, объект Carey Barr]
 
 //= =================================TASK-3===================================
 console.log('');
 console.log('TASK-3');
 
 const getUsersByGender = (users, gender) => users.filter(user => user.gender === gender).map(us => us.name);
-console.log(getUsersByGender(users, 'male')); // [ 'Moore Hensley', 'Ross Vazquez', 'Carey Barr', 'Blackburn Dotson' ]
+console.table(getUsersByGender(users, 'male')); // [ 'Moore Hensley', 'Ross Vazquez', 'Carey Barr', 'Blackburn Dotson' ]
 
 //= ===================================TASK-4==================================
 console.log('');
 console.log('TASK-4');
 
 const getInactiveUsers = users => users.filter(user => !user.isActive);
-console.log(getInactiveUsers(users)); // [объект Moore Hensley, объект Ross Vazquez, объект Blackburn Dotson]
+console.table(getInactiveUsers(users)); // [объект Moore Hensley, объект Ross Vazquez, объект Blackburn Dotson]
 
 //= ===================================TASK-5====================================
 console.log('');
 console.log('TASK-5');
 
 const getUserByEmail = (users, email) => users.find(user => user.email === email);
-console.log(getUserByEmail(users, 'shereeanthony@kog.com')); // {объект пользователя Sheree Anthony}
-console.log(getUserByEmail(users, 'elmahead@omatom.com')); // {объект пользователя Elma Head}
+console.table(getUserByEmail(users, 'shereeanthony@kog.com')); // {объект пользователя Sheree Anthony}
+console.table(getUserByEmail(users, 'elmahead@omatom.com')); // {объект пользователя Elma Head}
 
 //= ====================================TASK-6====================================
 console.log('');
 console.log('TASK-6');
 
 const getUsersWithAge = (users, min, max) => users.filter(user => user.age > min && user.age < max);
-console.log(getUsersWithAge(users, 20, 30)); // [объект Ross Vazquez, объект Elma Head, объект Carey Barr]
-console.log(getUsersWithAge(users, 30, 40));
+console.table(getUsersWithAge(users, 20, 30)); // [объект Ross Vazquez, объект Elma Head, объект Carey Barr]
+console.table(getUsersWithAge(users, 30, 40));
 // [объект Moore Hensley, объект Sharlene Bush, объект Blackburn Dotson, объект Sheree Anthony]
 
 //= =====================================TASK-7======================================
@@ -150,34 +150,55 @@ console.log(getUsersByFriend(users, 'Goldie Gentry')); // [ 'Elma Head', 'Sheree
 console.log('');
 console.log('TASK-9');
 
-const getUniqueSkills = users => users
-  .reduce((allSkills, user) => {
-    allSkills.push(...user.skills);
-    return allSkills;
-  }, [])
-  .reduce((uniqueSlills, skill) => {
-    if (!uniqueSlills.includes(skill)) {
-      uniqueSlills.push(skill);
-    }
-    return uniqueSlills;
-  }, [])
+// const getUniqueSkills = users => users
+//   .reduce((allSkills, user) => {
+//     allSkills.push(...user.skills);
+//     return allSkills;
+//   }, [])
+//   .reduce((uniqueSlills, skill) => {
+//     if (!uniqueSlills.includes(skill)) {
+//       uniqueSlills.push(skill);
+//     }
+//     return uniqueSlills;
+//   }, [])
+//   .sort((a, b) => a.localeCompare(b, 'en'));
+
+  const getUniqueSkills = users => users
+  .reduce((allSkills, user) => [...allSkills, ...user.skills], [])
+  .filter((skill,index,allSkills) => index === allSkills.indexOf(skill))
   .sort((a, b) => a.localeCompare(b, 'en'));
 
-console.log(getUniqueSkills(users));
+console.table(getUniqueSkills(users));
 // [ 'adipisicing', 'amet', 'anim', 'commodo', 'culpa', 'elit', 'ex', 'ipsum', 'irure', 'laborum', 'lorem', 'mollit', 'non', 'nostrud', 'nulla', 'proident', 'tempor', 'velit', 'veniam' ]
 
 //= =======================================TASK-10==========================================
 console.log('');
 console.log('TASK-10');
 
+// const getNamesSortedByFriendsCount = users => users
+//   .reduce((total, user) => {
+//     user.howMamyFriends = user.friends.reduce(ownFriend => ownFriend += 1, 0);
+//     total.push(user);
+//     return total;
+//   }, [])
+//   .sort((a, b) => a.howMamyFriends - b.howMamyFriends)
+//   .map(totalUsers => totalUsers.name);
+
 const getNamesSortedByFriendsCount = users => users
-  .reduce((total, user) => {
-    user.howMamyFriends = user.friends.reduce(ownFriend => ownFriend += 1, 0);
-    total.push(user);
-    return total;
-  }, [])
-  .sort((a, b) => a.howMamyFriends - b.howMamyFriends)
+  .map(user => ({
+    name: user.name,
+    friends: user.friends.length,
+    }))
+  .sort((a = {friends}, b = {friends} ) => a - b)
   .map(totalUsers => totalUsers.name);
 
-console.log(getNamesSortedByFriendsCount(users));
+  // const getNamesSortedByFriendsCount = users => users.map(e => ({
+  //   name: e.name,
+  //   friends: e.friends.length,
+  //   }))
+  //   .sort((a = {friends}, b = {friends} ) => a - b)
+  //   .map(e => e.name)
+
+console.table(getNamesSortedByFriendsCount(users));
 // [ 'Moore Hensley', 'Sharlene Bush', 'Elma Head', 'Carey Barr', 'Blackburn Dotson', 'Sheree Anthony', 'Ross Vazquez' ]
+
